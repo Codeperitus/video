@@ -12,3 +12,4 @@ xformers
 huggingface_hub
 Pillow
 protobuf
+python-multipart
