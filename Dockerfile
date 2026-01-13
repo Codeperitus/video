@@ -2,7 +2,7 @@ FROM ghcr.io/jemeyer/comfyui:latest
 
 USER root
 
-RUN apk add --no-cache git
+RUN apt-get update && apt-get install -y git
 
 # Make bundled ComfyUI look like a real git repo for Manager
 RUN cd /app && \
