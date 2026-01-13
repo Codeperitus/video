@@ -1,10 +1,9 @@
 opencv-python
-onnxruntime
-onnxruntime-gpu
-numba
 imageio
 imageio-ffmpeg
-scenedetect
 moviepy
-transformers
+scenedetect
 timm
+transformers
+onnxruntime-gpu
+decord
