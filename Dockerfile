@@ -27,11 +27,12 @@ RUN pip install -r /workspace/requirements-extra.txt
 # ---------- Video Nodes ----------
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 RUN git clone https://github.com/Kosinkadink/ComfyUI-AnimateDiff.git custom_nodes/ComfyUI-AnimateDiff
-RUN git clone https://github.com/kabachuha/ComfyUI-SVDContent.git custom_nodes/ComfyUI-SVDContent
+RUN git clone https://github.com/kabachuha/ComfyUI-SVDNodes.git custom_nodes/ComfyUI-SVDNodes
 RUN git clone https://github.com/pythops/ComfyUI-LTXVideo.git custom_nodes/ComfyUI-LTXVideo
 RUN git clone https://github.com/ExeterLaboratories/ComfyUI-ZeroScope.git custom_nodes/ComfyUI-ZeroScope
 RUN git clone https://github.com/wanghaofan/ComfyUI-CogVideoX.git custom_nodes/ComfyUI-CogVideoX
 RUN git clone https://github.com/ltdrdata/ComfyUI-VideoHelperSuite.git custom_nodes/ComfyUI-VideoHelperSuite
+
 
 # ---------- Image Nodes ----------
 RUN git clone https://github.com/cubiq/ComfyUI_essentials.git custom_nodes/ComfyUI_essentials
