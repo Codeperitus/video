@@ -6,11 +6,12 @@ from huggingface_hub import login
 
 login(token=os.environ.get("HUGGINGFACE_HUB_TOKEN", ""))
 
-MODEL_ID = "zai-org/CogVideoX-5b"
+# Correct official repo
+MODEL_ID = "THUDM/cogvideox-5b"
 
 cog_pipe = CogVideoXPipeline.from_pretrained(
     MODEL_ID,
-    torch_dtype=torch.float16,
+    torch_dtype=torch.float16
 ).to("cuda")
 
 def run_cogvideo(prompt, output_path):
