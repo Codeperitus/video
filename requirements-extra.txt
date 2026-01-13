@@ -1,0 +1,10 @@
+opencv-python
+onnxruntime
+onnxruntime-gpu
+numba
+imageio
+imageio-ffmpeg
+scenedetect
+moviepy
+transformers
+timm
