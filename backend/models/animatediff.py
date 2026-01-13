@@ -1,27 +1,25 @@
 import os
 import torch
-from diffusers import AnimateDiffPipeline, MotionAdapter, EulerDiscreteScheduler
+from diffusers import AnimateDiffPipeline, MotionAdapter
 from PIL import Image
 import imageio
 from huggingface_hub import login
 
-# Login to HF
 login(token=os.environ.get("HUGGINGFACE_HUB_TOKEN", ""))
 
-# Base SD model
-base_model = "runwayml/stable-diffusion-v1-5"
+BASE_MODEL = "runwayml/stable-diffusion-v1-5"
 
-# Load motion adapter (THIS EXISTS)
+# Load motion module
 motion_adapter = MotionAdapter.from_pretrained(
     "guoyww/animatediff-motion-adapter-v1-5",
     torch_dtype=torch.float16
 )
 
-# Build pipeline manually (official method)
+# Build AnimateDiff pipeline
 ad_pipe = AnimateDiffPipeline.from_pretrained(
-    base_model,
+    BASE_MODEL,
     motion_adapter=motion_adapter,
-    torch_dtype=torch.float16
+    torch_dtype=torch.float16,
 ).to("cuda")
 
 def run_animatediff(image_path, prompt, output_path):
@@ -30,8 +28,8 @@ def run_animatediff(image_path, prompt, output_path):
     frames = ad_pipe(
         prompt=prompt,
         image=image,
-        num_frames=24,
-        guidance_scale=3.0,
+        num_frames=16,
+        guidance_scale=3.0
     ).frames
 
     imageio.mimsave(output_path, frames, fps=12)

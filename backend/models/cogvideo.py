@@ -1,33 +1,24 @@
+import os
 import torch
 import imageio
 from diffusers import CogVideoXPipeline
-import os
 from huggingface_hub import login
 
-# Login to HuggingFace
 login(token=os.environ.get("HUGGINGFACE_HUB_TOKEN", ""))
 
-# Load CogVideoX 5B (correct repo)
+MODEL_ID = "zai-org/CogVideoX-5b"
+
 cog_pipe = CogVideoXPipeline.from_pretrained(
-    "zai-org/CogVideoX-5b",
+    MODEL_ID,
     torch_dtype=torch.float16,
 ).to("cuda")
 
-
-def run_cogvideo(prompt: str, output_path: str):
-    """
-    Generate a CogVideoX animation and save as .mp4 or .gif
-    """
-
+def run_cogvideo(prompt, output_path):
     result = cog_pipe(
         prompt=prompt,
-        num_frames=16,          # Default good animation length
+        num_frames=16,
         guidance_scale=5.5,
-        num_inference_steps=28,
+        num_inference_steps=28
     )
-
-    # Get generated frames
     frames = result.frames[0]
-
-    # Save video / gif
     imageio.mimsave(output_path, frames, fps=12)
