@@ -12,4 +12,5 @@ RUN git clone https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved && \
     git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus && \
     git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
 
+# Force ComfyUI to bind to Northflank port
 ENTRYPOINT ["python", "/app/main.py", "--listen", "0.0.0.0", "--port", "8188"]
