@@ -27,8 +27,7 @@ RUN pip install -r /workspace/requirements-extra.txt
 # ---------- Install ONLY ComfyUI Manager ----------
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 
-# ---------- Upscalers ----------
-RUN pip install realesrgan
+
 
 # ---------- Include startup script ----------
 COPY startup.sh /workspace/startup.sh
