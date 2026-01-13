@@ -1,19 +1,21 @@
 FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 
-# System deps
 RUN apt-get update && apt-get install -y python3 python3-pip git
 
-# Working directory
+# Go to /app inside container
 WORKDIR /app
 
-# Copy files
+# Copy your repository into the container
 COPY . .
 
-# Install Python deps
+# Install your Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Expose API port
+# Expose the port FastAPI will run on
 EXPOSE 8000
 
-# Start API
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Move into backend folder where main.py actually lives
+WORKDIR /app/backend
+
+# Start the FastAPI app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
