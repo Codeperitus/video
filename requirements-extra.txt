@@ -1,9 +1,0 @@
-opencv-python
-imageio
-imageio-ffmpeg
-moviepy
-scenedetect
-timm
-transformers
-onnxruntime-gpu
-decord
