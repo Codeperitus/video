@@ -13,18 +13,20 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git
 
 WORKDIR /workspace/ComfyUI
 
-# ---------- Install PyTorch (correct version for ComfyUI) ----------
-# Torch 2.3.1 + CUDA 12.1 + torchvision/torchaudio
+# ---------- Install PyTorch 2.4.1 (REQUIRED) ----------
 RUN pip install --upgrade pip
-RUN pip install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --extra-index-url https://download.pytorch.org/whl/cu121
+RUN pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --extra-index-url https://download.pytorch.org/whl/cu121
+
+# ---------- Prevent numpy 2.x crash ----------
+RUN pip install "numpy<2"
 
 # ---------- Install ComfyUI core requirements ----------
 RUN pip install -r requirements.txt
 
-# ---------- Install ONLY ComfyUI Manager ----------
+# ---------- Install ComfyUI Manager ----------
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
 
-# ---------- Copy minimal startup script ----------
+# ---------- Startup Script ----------
 COPY startup.sh /workspace/startup.sh
 RUN chmod +x /workspace/startup.sh
 
