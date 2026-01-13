@@ -9,3 +9,5 @@ imageio
 imageio[ffmpeg]
 opencv-python
 xformers
+huggingface_hub
+Pillow
