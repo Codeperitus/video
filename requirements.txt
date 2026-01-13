@@ -5,3 +5,7 @@ accelerate
 transformers
 diffusers
 safetensors
+imageio
+imageio[ffmpeg]
+opencv-python
+xformers
