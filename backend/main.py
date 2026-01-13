@@ -5,8 +5,6 @@ import uuid, os
 # Load model modules
 from models.sdxl import generate_image
 from models.animatediff import run_animatediff
-#from models.cogvideo import run_cogvideo
-from models.opensora import run_opensora
 
 app = FastAPI()
 
@@ -44,10 +42,10 @@ def download(file: str):
 @app.post("/video")
 async def video_api(
     prompt: str = Form(...),
-    mode: str = Form(...),                     # animatediff / cogvideo / opensora
+    mode: str = Form(...),  
     file1: UploadFile = File(None)
 ):
-    video_name = f"{uuid.uuid4().hex}.mp4"
+    video_name = f"{uuid.uuid4().hex}.gif"   # FIXED
     video_path = f"outputs/{video_name}"
 
     img_path = None
@@ -56,18 +54,10 @@ async def video_api(
         with open(img_path, "wb") as f:
             f.write(await file1.read())
 
-    # Pick model
     if mode == "animatediff":
         if not img_path:
             raise HTTPException(400, "AnimatedDiff needs an image")
         run_animatediff(img_path, prompt, video_path)
-
-    elif mode == "cogvideo":
-        raise HTTPException(503, "CogVideo temporarily disabled")
-
-
-    elif mode == "opensora":
-        run_opensora(prompt, video_path)
 
     else:
         raise HTTPException(400, "Invalid mode")
