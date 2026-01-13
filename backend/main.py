@@ -5,7 +5,7 @@ import uuid, os
 # Load model modules
 from models.sdxl import generate_image
 from models.animatediff import run_animatediff
-from models.cogvideo import run_cogvideo
+#from models.cogvideo import run_cogvideo
 from models.opensora import run_opensora
 
 app = FastAPI()
@@ -63,7 +63,8 @@ async def video_api(
         run_animatediff(img_path, prompt, video_path)
 
     elif mode == "cogvideo":
-        run_cogvideo(prompt, video_path)
+        raise HTTPException(503, "CogVideo temporarily disabled")
+
 
     elif mode == "opensora":
         run_opensora(prompt, video_path)
