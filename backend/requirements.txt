@@ -8,10 +8,8 @@ sentencepiece
 safetensors
 imageio
 imageio[ffmpeg]
-opencv-python
-xformers
-huggingface_hub>=0.21.0
 Pillow
-protobuf
+huggingface_hub>=0.21.0
 python-multipart
-moviepy
+protobuf<=3.20.3
+xformers
