@@ -17,14 +17,13 @@ os.makedirs("uploads", exist_ok=True)
 os.makedirs("outputs", exist_ok=True)
 
 # --------------------------
-# SDXL IMAGE GENERATOR
-# (your existing SDXL code)
+# SDXL IMAGE GENERATOR (your existing code)
 # --------------------------
 from models.sdxl import generate_image
 
 
 # --------------------------
-# COGVIDEOX 2B CONFIG
+# COGVIDE2 VIDEO MODEL CONFIG
 # --------------------------
 MODEL_NAME = "zai-org/CogVideoX-2b"
 
@@ -41,7 +40,7 @@ def get_video_pipeline():
         video_pipe = DiffusionPipeline.from_pretrained(
             MODEL_NAME,
             dtype=torch.float16,
-            device_map="cuda"
+            device_map="balanced"
         )
     return video_pipe
 
@@ -71,7 +70,7 @@ def save_video(frames, output_path: str, fps: int = 8):
 
 
 # --------------------------
-# IMAGE ENDPOINT
+# ROUTE: TEXT → IMAGE (SDXL)
 # --------------------------
 @app.post("/generate")
 def text_to_image(prompt: str = Form(...)):
@@ -88,7 +87,7 @@ def text_to_image(prompt: str = Form(...)):
 
 
 # --------------------------
-# DOWNLOAD ENDPOINT
+# ROUTE: DOWNLOAD ANY OUTPUT
 # --------------------------
 @app.get("/download/{file}")
 def download(file: str):
@@ -99,7 +98,7 @@ def download(file: str):
 
 
 # --------------------------
-# VIDEO ENDPOINT
+# ROUTE: TEXT → VIDEO (NEW COGVIDEOX)
 # --------------------------
 @app.post("/video")
 async def generate_video(prompt: str = Form(...)):
