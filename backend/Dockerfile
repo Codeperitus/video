@@ -1,23 +1,24 @@
-FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
-    python3 python3-pip python3-venv git ffmpeg && \
-    apt-get clean
+# Install system packages
+RUN apt-get update && apt-get install -y ffmpeg git && apt-get clean
 
+# Set working directory
 WORKDIR /app
 
+# Copy project files
 COPY . .
 
-RUN pip3 install --upgrade pip
-
-# PyTorch with CUDA 12.1 (works with CUDA 12.4 runtime)
-RUN pip3 install torch==2.3.0 --extra-index-url https://download.pytorch.org/whl/cu121
+# Upgrade pip
+RUN pip install --upgrade pip
 
 # Install dependencies
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Expose port
 EXPOSE 8000
 
+# Start FastAPI server
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
