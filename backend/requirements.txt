@@ -8,8 +8,9 @@ sentencepiece
 safetensors
 imageio
 imageio[ffmpeg]
-Pillow
 huggingface_hub>=0.21.0
+Pillow
 python-multipart
 protobuf<=3.20.3
 xformers
+timm

@@ -17,13 +17,14 @@ os.makedirs("uploads", exist_ok=True)
 os.makedirs("outputs", exist_ok=True)
 
 # --------------------------
-# SDXL IMAGE GENERATOR (your existing code)
+# SDXL IMAGE GENERATOR
+# (your existing SDXL code)
 # --------------------------
 from models.sdxl import generate_image
 
 
 # --------------------------
-# COGVIDE2 VIDEO MODEL CONFIG
+# COGVIDEOX 2B CONFIG
 # --------------------------
 MODEL_NAME = "zai-org/CogVideoX-2b"
 
@@ -70,7 +71,7 @@ def save_video(frames, output_path: str, fps: int = 8):
 
 
 # --------------------------
-# ROUTE: TEXT → IMAGE (SDXL)
+# IMAGE ENDPOINT
 # --------------------------
 @app.post("/generate")
 def text_to_image(prompt: str = Form(...)):
@@ -87,7 +88,7 @@ def text_to_image(prompt: str = Form(...)):
 
 
 # --------------------------
-# ROUTE: DOWNLOAD ANY OUTPUT
+# DOWNLOAD ENDPOINT
 # --------------------------
 @app.get("/download/{file}")
 def download(file: str):
@@ -98,7 +99,7 @@ def download(file: str):
 
 
 # --------------------------
-# ROUTE: TEXT → VIDEO (NEW COGVIDEOX)
+# VIDEO ENDPOINT
 # --------------------------
 @app.post("/video")
 async def generate_video(prompt: str = Form(...)):
