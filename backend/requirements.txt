@@ -1,9 +1,9 @@
 fastapi
 uvicorn
 torch
-accelerate
-transformers>=4.39.0
-diffusers>=0.27.0
+accelerate>=0.30.0
+transformers>=4.40.0
+diffusers>=0.31.0
 einops
 sentencepiece
 safetensors

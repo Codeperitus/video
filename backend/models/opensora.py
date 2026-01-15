@@ -1,7 +1,7 @@
 import os
 import torch
 import imageio
-from diffusers import AutoPipelineForText2Video
+from diffusers import DiffusionPipeline
 from huggingface_hub import login
 
 # Optional HF auth
@@ -11,8 +11,8 @@ if hf_token and hf_token.strip() != "":
 
 MODEL_NAME = "OpenMotionLab/OpenSora-STDiT-v3-2B"
 
-# Load Open-Sora 2B
-pipe = AutoPipelineForText2Video.from_pretrained(
+# Load Open-Sora model
+pipe = DiffusionPipeline.from_pretrained(
     MODEL_NAME,
     torch_dtype=torch.float16
 ).to("cuda")
@@ -20,17 +20,21 @@ pipe = AutoPipelineForText2Video.from_pretrained(
 
 def generate_opensora_video(prompt: str, output_path: str):
     """
-    Generate cinematic video using Open-Sora 2.0 (2B)
+    Generate cinematic video using Open-Sora 2B
     """
+
     result = pipe(
         prompt=prompt,
-        num_frames=56,    # ~2.3 seconds at 24fps
+        num_frames=56,      # ~2.3 seconds at 24fps
         height=512,
         width=896,
         guidance_scale=7.5
     )
 
-    frames = result.frames
+    # Depending on the pipeline, frames might be under result.frames or result.videos
+    frames = getattr(result, "frames", None)
+    if frames is None:
+        frames = result.videos[0]  # fallback
 
-    # Save as MP4
+    # Save video as MP4
     imageio.mimsave(output_path, frames, fps=24)
