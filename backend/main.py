@@ -4,23 +4,31 @@ import uuid, os
 
 from models.sdxl import generate_image
 from models.opensora import generate_opensora_video
+from utils.video import save_video
 
 app = FastAPI()
 
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("outputs", exist_ok=True)
 
-# ---------------- TEXT → IMAGE ----------------
+
+# ---------------- TEXT → IMAGE (SDXL) ----------------
 @app.post("/generate")
 def text_to_image(prompt: str = Form(...)):
     try:
-        output_path = f"outputs/{uuid.uuid4().hex}.png"
+        file_name = f"{uuid.uuid4().hex}.png"
+        output_path = f"outputs/{file_name}"
+
+        # SDXL image generation (already working)
         generate_image(prompt, output_path)
-        return {"url": f"/download/{os.path.basename(output_path)}"}
+
+        return {"url": f"/download/{file_name}"}
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# ---------------- DOWNLOAD ANY OUTPUT FILE ----------------
 @app.get("/download/{file}")
 def download(file: str):
     path = f"outputs/{file}"
@@ -29,21 +37,31 @@ def download(file: str):
     return FileResponse(path)
 
 
-# ---------------- TEXT → VIDEO (Open-Sora 2B) ----------------
+# ---------------- TEXT → VIDEO (Open-Sora) ----------------
 @app.post("/opensora")
 async def opensora(prompt: str = Form(...)):
     try:
         video_name = f"{uuid.uuid4().hex}.mp4"
         output_path = f"outputs/{video_name}"
 
-        generate_opensora_video(prompt, output_path)
+        # Generate frames (from OpenSora pipeline)
+        frames = generate_opensora_video(
+            prompt=prompt,
+            num_frames=56,
+            height=512,
+            width=896
+        )
+
+        # Save video
+        save_video(frames, output_path, fps=24)
 
         return {"url": f"/download/{video_name}"}
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# ---------------- HEALTH ----------------
+# ---------------- HEALTH CHECK ----------------
 @app.get("/")
 def home():
     return {

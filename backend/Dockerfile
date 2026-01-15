@@ -7,14 +7,15 @@ RUN apt-get update && apt-get install -y \
     apt-get clean
 
 WORKDIR /app
+
 COPY . .
 
 RUN pip3 install --upgrade pip
 
-# PyTorch GPU (CUDA 12.1 wheels are correct for 12.4 runtime)
+# PyTorch with CUDA 12.1 (works with CUDA 12.4 runtime)
 RUN pip3 install torch==2.3.0 --extra-index-url https://download.pytorch.org/whl/cu121
 
-# Install project dependencies
+# Install dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
