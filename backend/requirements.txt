@@ -2,14 +2,14 @@ fastapi
 uvicorn
 torch
 accelerate
-transformers
-diffusers
+transformers>=4.39.0
+diffusers>=0.27.0
 safetensors
 imageio
 imageio[ffmpeg]
 opencv-python
 xformers
-huggingface_hub
+huggingface_hub>=0.21.0
 Pillow
 protobuf
 python-multipart

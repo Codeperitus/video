@@ -3,29 +3,31 @@ from diffusers import MochiPipeline
 from huggingface_hub import login
 import os, imageio
 
-# Login using environment variable
-login(token=os.environ.get("HUGGINGFACE_HUB_TOKEN", ""))
+# Optional: login if token exists
+hf_token = os.environ.get("HUGGINGFACE_HUB_TOKEN", "")
+if hf_token and hf_token.strip() != "":
+    login(token=hf_token)
 
-MODEL_NAME = "luma-art/mochi-1.5"
+# FIXED MODEL NAME
+MODEL_NAME = "lumaai/LumaAI-Mochi"
 
-# Load Mochi model on GPU using BF16 (best for A100/H100)
+# Load Mochi model on GPU
 pipe = MochiPipeline.from_pretrained(
     MODEL_NAME,
-    torch_dtype=torch.bfloat16,
+    dtype=torch.float16   # torch_dtype deprecated
 ).to("cuda")
 
 
 def generate_mochi_video(prompt: str, output_path: str):
     """
-    Generate a high-quality video using Mochi 1.5.
-    Output is saved as MP4 to the given path.
+    Generate video using Mochi model
     """
 
     result = pipe(
         prompt=prompt,
-        num_frames=96,      # 4 seconds at 24fps
+        num_frames=96,   # 4 seconds @ 24fps
         fps=24,
-        height=720,         # HD output (safe for VRAM)
+        height=720,
         width=1280,
         guidance_scale=5.0
     )
