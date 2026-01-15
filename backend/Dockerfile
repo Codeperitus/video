@@ -12,11 +12,11 @@ COPY . .
 
 RUN pip3 install --upgrade pip
 
-# Install CORRECT PyTorch GPU version (supports CUDA 12.1, works on CUDA 12.4 base)
+# PyTorch GPU (CUDA 12.1 which is correct for diffusers + CUDA 12.4 runtime)
 RUN pip3 install torch==2.3.0 --extra-index-url https://download.pytorch.org/whl/cu121
 
-# Install diffusers + transformers
-RUN pip3 install --upgrade diffusers transformers
+# Install needed libs
+RUN pip3 install --upgrade diffusers transformers accelerate einops sentencepiece
 
 # Project requirements
 RUN pip3 install --no-cache-dir -r requirements.txt

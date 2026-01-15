@@ -2,11 +2,8 @@ from fastapi import FastAPI, Form, HTTPException
 from fastapi.responses import FileResponse
 import uuid, os
 
-# Image model
 from models.sdxl import generate_image
-
-# Video model (CogVideoX)
-from models.cogvideox import generate_cogvideo
+from models.opensora import generate_opensora_video
 
 app = FastAPI()
 
@@ -32,14 +29,14 @@ def download(file: str):
     return FileResponse(path)
 
 
-# ---------------- TEXT → VIDEO (CogVideoX) ----------------
-@app.post("/cogvideo")
-async def cogvideo(prompt: str = Form(...)):
+# ---------------- TEXT → VIDEO (Open-Sora 2B) ----------------
+@app.post("/opensora")
+async def opensora(prompt: str = Form(...)):
     try:
         video_name = f"{uuid.uuid4().hex}.mp4"
         output_path = f"outputs/{video_name}"
 
-        generate_cogvideo(prompt, output_path)
+        generate_opensora_video(prompt, output_path)
 
         return {"url": f"/download/{video_name}"}
     except Exception as e:
@@ -52,5 +49,5 @@ def home():
     return {
         "status": "running",
         "image_model": "SDXL",
-        "video_model": "CogVideoX 2.0"
+        "video_model": "Open-Sora 2.0 (2B)"
     }

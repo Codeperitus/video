@@ -4,6 +4,8 @@ torch
 accelerate
 transformers>=4.39.0
 diffusers>=0.27.0
+einops
+sentencepiece
 safetensors
 imageio
 imageio[ffmpeg]
